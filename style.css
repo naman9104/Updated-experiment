@@ -1,0 +1,109 @@
+:root {
+  --mouse-x: 50vw;
+  --mouse-y: 50vh;
+}
+
+body {
+  margin: 0;
+  background: #09090b;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
+  cursor: none; /* Hide default cursor for true synergy */
+}
+
+/* Custom Pointer */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(calc(var(--mouse-x) - 4px), calc(var(--mouse-y) - 4px));
+  z-index: 10;
+  transition: transform 0.2s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+  will-change: transform;
+}
+
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(120, 80, 255, 0.15) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(calc(var(--mouse-x) - 200px), calc(var(--mouse-y) - 200px));
+  z-index: 1;
+}
+
+/* Button Structure */
+.magnetic-btn {
+  position: relative;
+  z-index: 2;
+  padding: 20px 40px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  outline: none;
+  text-transform: uppercase;
+  cursor: none; 
+}
+
+/* Background Layer (Handles Distortion) */
+.btn-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  will-change: transform;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Text Layer (Handles Depth) */
+.btn-text {
+  position: relative;
+  display: inline-block;
+  z-index: 3;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Hover States driven by class instead of CSS hover for better sync */
+.magnetic-btn.is-active .btn-bg {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(120, 80, 255, 0.4);
+  border-color: rgba(120, 80, 255, 0.6);
+}
+
+/* Synergy State for Cursor */
+.cursor-dot.synergy {
+  width: 60px;
+  height: 60px;
+  background: rgba(120, 80, 255, 0.3);
+  backdrop-filter: invert(100%);
+  transform: translate(calc(var(--mouse-x) - 30px), calc(var(--mouse-y) - 30px));
+}
+#particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0; /* Sub-layer behind everything */
+  pointer-events: none; /* Let clicks pass through to the button */
+}
